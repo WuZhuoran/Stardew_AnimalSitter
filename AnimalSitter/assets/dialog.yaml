@@ -16,7 +16,7 @@ xnbData:
     numSharedResources: 0
 
 content:  #!Dictionary<String,String>
-    comment_1: "Indexes in this file that are prefixed with an X rely on specific ordering for the in game dialog to make sense. Other ones are randomly selected, so order doesn't matter. Indexes also need to be in the format group_id, with a single underscore. -jwdred" #!String
+    comment_1: "Indexes in this file that are prefixed with an X rely on specific ordering for the in game dialog to make sense. Other ones are randomly selected, so order doesn't matter. Indexes also need to be in the format group_id, with a single underscore. -oliver" #!String
     Xdialog_1: "%%spouse%% has taken care of the animals." #!String
     Xdialog_2: "Your animal sitter performed %%numActions%% tasks." #!String
     Xdialog_3: "The cost was %%totalCost%%g." #!String

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using AnimalSitter.Framework;
 using Microsoft.Xna.Framework;
-using StardewLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Objects;
+using AnimalSitter.Common;
 using Object = StardewValley.Object;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AnimalSitter
 {
@@ -74,7 +75,7 @@ namespace AnimalSitter
         public override void Entry(IModHelper helper)
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
-            this.DialogueManager = new DialogueManager(this.Config, helper.Content, this.Monitor);
+            this.DialogueManager = new DialogueManager(this.Config, helper.ModContent, this.Monitor);
             this.ChestManager = new ChestManager(this.Monitor);
 
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
@@ -176,7 +177,7 @@ namespace AnimalSitter
                     {
                         this.Monitor.Log($"Aging animal to mature+1 days: {animal.Name}", LogLevel.Trace);
 
-                        animal.age.Value = animal.ageWhenMature.Value + 1;
+                        animal.age.Value = animal.age.Value + 1;
                         animal.reload(animal.home);
                         stats.Aged++;
                     }
@@ -205,7 +206,7 @@ namespace AnimalSitter
                         stats.MaxFriendship++;
                     }
 
-                    if (animal.currentProduce.Value > 0 && this.HarvestEnabled)
+                    if (animal.currentProduce.Value != null && Convert.ToInt32(animal.currentProduce.Value) > 0 && this.HarvestEnabled)
                     {
                         this.Monitor.Log($"Has produce: {animal.Name} {animal.currentProduce}", LogLevel.Trace);
 
@@ -216,7 +217,7 @@ namespace AnimalSitter
                                 Object toAdd = new Object(animal.currentProduce.Value, 1, false, -1, animal.produceQuality.Value);
                                 this.AddItemToInventory(toAdd, farmer);
 
-                                animal.currentProduce.Value = 0;
+                                animal.currentProduce.Value = "0";
                                 stats.TrufflesHarvested++;
                             }
                         }
@@ -225,7 +226,7 @@ namespace AnimalSitter
                             Object toAdd = new Object(animal.currentProduce.Value, 1, false, -1, animal.produceQuality.Value);
                             this.AddItemToInventory(toAdd, farmer);
 
-                            animal.currentProduce.Value = 0;
+                            animal.currentProduce.Value = "0";
                             stats.ProductsHarvested++;
                         }
 
@@ -239,7 +240,7 @@ namespace AnimalSitter
             }
 
             this.HarvestTruffles(stats);
-            this.HarvestCoops(stats);
+            // this.HarvestCoops(stats);
 
             int actions = stats.GetTaskCount();
             bool gatheringOnly = stats.JustGathering();
@@ -272,6 +273,7 @@ namespace AnimalSitter
         {
             Farm farm = Game1.getFarm();
             Farmer farmer = Game1.player;
+            Random random = new Random();
 
             List<Vector2> itemsToRemove = new List<Vector2>();
 
@@ -287,7 +289,7 @@ namespace AnimalSitter
                     if (Game1.player.professions.Contains(16))
                         obj.Quality = 4;
 
-                    double randomNum = Game1.random.NextDouble();
+                    double randomNum = random.NextDouble();
                     bool doubleChance = (this.Checker.Equals("pet")) ? (randomNum < 0.4) : (randomNum < 0.2);
 
                     if (Game1.player.professions.Contains(13) && doubleChance)
@@ -332,11 +334,11 @@ namespace AnimalSitter
 
             foreach (Building building in farm.buildings)
             {
-                if (building is Coop)
+                if (building is Building)
                 {
                     List<Vector2> itemsToRemove = new List<Vector2>();
 
-                    foreach (KeyValuePair<Vector2, Object> keyvalue in building.indoors.Value.Objects.Pairs)
+                    foreach (KeyValuePair<Vector2, Object> keyvalue in building.GetIndoors().Objects.Pairs)
                     {
                         Object obj = keyvalue.Value;
 
@@ -360,8 +362,9 @@ namespace AnimalSitter
                     // Remove the object that were picked up.
                     foreach (Vector2 itemLocation in itemsToRemove)
                     {
-                        building.indoors.Value.removeObject(itemLocation, false);
+                        building.GetIndoors().removeObject(itemLocation, false);
                     }
+                    
                 }
             }
         }
@@ -439,7 +442,7 @@ namespace AnimalSitter
             {
                 if (this.Checker.ToLower() == "spouse")
                 {
-                    if (Game1.player.isMarried())
+                    if (Game1.player.isMarriedOrRoommates())
                     {
                         message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(1, "Xdialog"), stats, this.Config);
                     }
@@ -503,7 +506,7 @@ namespace AnimalSitter
                         message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("smalltalk"), stats, this.Config);
                         message += portrait + "#$e#";
 
-                        character.CurrentDialogue.Push(new Dialogue(message, character));
+                        character.CurrentDialogue.Push(new Dialogue(character, message));
                         Game1.drawDialogue(character);
                     }
                     else
@@ -520,13 +523,13 @@ namespace AnimalSitter
 
         private List<FarmAnimal> GetAnimals()
         {
-            List<FarmAnimal> list = Game1.getFarm().animals.Values.ToList();
-            foreach (Building building in Game1.getFarm().buildings)
-            {
+            Farm farm = Game1.getFarm();
+            List<FarmAnimal> animals = farm.getAllFarmAnimals().ToList();
+
+            foreach (Building building in farm.buildings)
                 if (building.indoors.Value != null && building.indoors.Value.GetType() == typeof(AnimalHouse))
-                    list.AddRange(((AnimalHouse)building.indoors.Value).animals.Values.ToList());
-            }
-            return list;
+                    animals.AddRange(((AnimalHouse)building.indoors.Value).animals.Values.ToList());
+            return animals;
         }
 
     }
