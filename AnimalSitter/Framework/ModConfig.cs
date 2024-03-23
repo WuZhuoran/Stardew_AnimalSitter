@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using StardewLib;
+﻿using AnimalSitter.Common;
+using Microsoft.Xna.Framework;
 
 namespace AnimalSitter.Framework
 {
