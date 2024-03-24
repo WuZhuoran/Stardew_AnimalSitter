@@ -8,6 +8,7 @@ This [mod](https://www.nexusmods.com/stardewvalley/mods/20831) provide Long-Term
 * Support Stardew Valley v1.6+.
 * Support SMAPI v4.0.0+.
 * TODO: Add i18n Support.
+* TODO: Add Mod Config Support.
 * TODO: Refactor basic framework.
 * Will Continue support future version of game and SMAPI.
 
