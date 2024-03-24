@@ -240,7 +240,7 @@ namespace AnimalSitter
             }
 
             this.HarvestTruffles(stats);
-            // this.HarvestCoops(stats);
+            this.HarvestCoops(stats);
 
             int actions = stats.GetTaskCount();
             bool gatheringOnly = stats.JustGathering();
@@ -334,7 +334,7 @@ namespace AnimalSitter
 
             foreach (Building building in farm.buildings)
             {
-                if (building is Building)
+                if (!building.GetIndoorsType().Equals(IndoorsType.None) && building is Building && !building.GetIndoorsName().Equals("Greenhouse"))
                 {
                     List<Vector2> itemsToRemove = new List<Vector2>();
 
