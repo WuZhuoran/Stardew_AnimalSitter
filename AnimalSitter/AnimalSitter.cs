@@ -11,6 +11,8 @@ using StardewValley.Objects;
 using AnimalSitter.Common;
 using Object = StardewValley.Object;
 using Microsoft.Xna.Framework.Graphics;
+using AnimalSitter.Integrations.GenericModConfigMenu;
+using Microsoft.Xna.Framework.Input;
 
 namespace AnimalSitter
 {
@@ -80,6 +82,103 @@ namespace AnimalSitter
 
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+        }
+
+        /// <summary>Raised after the player loads a save slot.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            // get Generic Mod Config Menu's API (if it's installed)
+            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null)
+                return;
+
+            // register mod
+            configMenu.Register(
+                mod: this.ModManifest,
+                reset: () => this.Config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(this.Config)
+            );
+
+            configMenu.AddKeybind(mod: this.ModManifest,
+                name: () => "KeyBind",
+                tooltip: () => "The key that you press to tell your animal helper to get to work. This defaults to the 'O' key.",
+                getValue: () => SButtonExtensions.ToSButton((Keys)Enum.Parse(typeof(Keys), this.Config.KeyBind)),
+                setValue: value => this.Config.KeyBind = value.ToString());
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "GrowUpEnabled",
+                tooltip: () => "This open tells your animal helper that you'd like them to use dark magic to instantly bring young animals up to the age where they can become contributing members of your farm. Default is false.",
+                getValue: () => this.Config.GrowUpEnabled,
+                setValue: value => this.Config.GrowUpEnabled = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "MaxHappinessEnabled",
+                tooltip: () => "This option tells your animal helper that you don't care how long (or where) they have to pet your animals, but their job is not done until each animal's happiness is maxed. Default is false.",
+                getValue: () => this.Config.MaxHappinessEnabled,
+                setValue: value => this.Config.MaxHappinessEnabled = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "MaxFullnessEnabled",
+                tooltip: () => "This option tells your animal helper to feed your animals. A full animal is a producing animal. Default is false.",
+                getValue: () => this.Config.MaxFullnessEnabled,
+                setValue: value => this.Config.MaxFullnessEnabled = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "HarvestEnabled",
+                tooltip: () => "This tells your animal worker to harvest the animal drops. If you like doing this yourself, then set this to false.",
+                getValue: () => this.Config.HarvestEnabled,
+                setValue: value => this.Config.HarvestEnabled = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "PettingEnabled",
+                tooltip: () => "This tells your animal worker that you want your animals petted. This is the whole reason I made this mod, so it defaults to true. So if you set this to \"false\", please keep it to yourself. If you enjoy petting each of your animals (because you don't have a hundred of them) then set it to false.",
+                getValue: () => this.Config.PettingEnabled,
+                setValue: value => this.Config.PettingEnabled = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "MaxFriendshipEnabled",
+                tooltip: () => "This tells your animal worker whether they have to wear your 'you' mask, so that the affection of the animals is directed toward you, and not the help. Defaults to false.",
+                getValue: () => this.Config.MaxFriendshipEnabled,
+                setValue: value => this.Config.MaxFriendshipEnabled = value
+            );
+
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => "CostPerAction",
+                tooltip: () => "This is how much to charge per action per animal. There have been some suggestions around this option, and I do have plans to introduce a more complex pricing structure in the future, but for now just make sure this includes all services that you want the animal checker to perform, and average it out over the number of actions. Defaults to 25.",
+                getValue: () => this.Config.CostPerAction,
+                setValue: value => this.Config.CostPerAction = value
+                );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "EnableMessages",
+                tooltip: () => "This is whether to enable in-game messages and dialogues revolving around your animal checker. It defaults to true.",
+                getValue: () => this.Config.EnableMessages,
+                setValue: value => this.Config.EnableMessages = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "TakeTrufflesFromPigs",
+                tooltip: () => "Whoever trainedm these pigs did an awful job, as they have a tendency to hide truffles. Where? I'm not exactly sure, but they've got 'em, trust me. With this option enabled, your farm helper will perform a TSA-approved body cavity search and find them. If you love the person who is doing your checking, or if you want your pigs to remain unviolated, or if you consider this cheating, then set it to false.",
+                getValue: () => this.Config.TakeTrufflesFromPigs,
+                setValue: value => this.Config.TakeTrufflesFromPigs = value
+            );
         }
 
 

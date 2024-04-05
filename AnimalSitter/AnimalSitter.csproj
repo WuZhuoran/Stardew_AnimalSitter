@@ -50,6 +50,7 @@
     <Compile Include="Common\DialogueManager.cs" />
     <Compile Include="Framework\AnimalTasks.cs" />
     <Compile Include="Framework\ModConfig.cs" />
+    <Compile Include="Integrations\GenericModConfigMenu\IGenericModConfigMenuApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
