@@ -217,7 +217,6 @@ namespace AnimalSitter
                                 Object toAdd = new Object(animal.currentProduce.Value, 1, false, -1, animal.produceQuality.Value);
                                 this.AddItemToInventory(toAdd, farmer);
 
-                                animal.currentProduce.Value = "0";
                                 stats.TrufflesHarvested++;
                             }
                         }
@@ -344,7 +343,7 @@ namespace AnimalSitter
 
                         this.Monitor.Log($"Found coop object: {obj.Name} / {obj.Category}/{obj.isAnimalProduct()}", LogLevel.Trace);
 
-                        if (obj.isAnimalProduct() || obj.ParentSheetIndex == 107)
+                        if (obj.isAnimalProduct() || obj.ParentSheetIndex == 107 && obj.Name != "Plush Bunny")
                         {
                             if (this.AddItemToInventory(obj, farmer))
                             {
