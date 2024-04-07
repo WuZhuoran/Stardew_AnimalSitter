@@ -1,15 +1,15 @@
-# Stardew Valley Mod - AnimalSitter
+# Stardew Valley Mod - Animal Sitter
 
 Animal Sitter Mod for Stardew Valley with long-term support.
 
 ## Introduction
 
 This [mod](https://www.nexusmods.com/stardewvalley/mods/20831) provide Long-Term Support for original [Animal Sitter](https://www.nexusmods.com/stardewvalley/mods/581) Mod. It includes:
+
 * Support Stardew Valley v1.6+.
 * Support SMAPI v4.0.0+.
-* TODO: Add i18n Support.
-* TODO: Add Mod Config Support.
-* TODO: Refactor basic framework.
+* Add i18n Support.
+* Add Mod Config Support.
 * Will Continue support future version of game and SMAPI.
 
 ## Getting Started
@@ -25,7 +25,7 @@ This [mod](https://www.nexusmods.com/stardewvalley/mods/20831) provide Long-Term
 
 Here's the default configuration:
 
-```
+```json
 "keybind": "O",
 "growUpEnabled": false,
 "maxHappinessEnabled": false,
@@ -78,13 +78,13 @@ The first specifies the item ID and the chest coordinates, this knows to check f
 ### Customization
 
 The `dialog.xnb` file will allow you to customize the dialog to your liking.  I've also included the dialog.yaml source file, but the mod will read it from the XNB file.  If you don't know how to do it, google "how to unpack and repack stardew valley mods". 
- 
+
 The dialogue elements are arranged in a name_index format. If the name starts with a capital 'X', that means those messages need to stay roughly in that order and in the same format for the dialog to make sense.  The number is important.
 
 All other elements can be added to, and modified because they are used randomly at the appropriate place in the dialogue.  You have to use the same "name" from the "name_id" that are already in the file, but you can add to and remove so long as all the numbers in a particular group are unique.
- 
+
 Also you'll see that I added a few names down at the bottom,"Shane_1", "Shane_2", "Leah_1", for example.  You can add any other Stardew characters dialog to the file in that same format.  Those dialogues will be merged in with the "smalltalk" group if your "whoChecks" is set to one of the characters.
- 
+
 Most of the notation that existing SDV dialogs use will work(for example @ is replaced by the name of the farmer).  There's also notation added to use values from this mod in the dialog, they are (along with a description)
  
 **%%animalsPet%%**  -  The number of animals that were petted.
@@ -97,9 +97,9 @@ Most of the notation that existing SDV dialogs use will work(for example @ is re
 **%%numActions%%**  -  The total number of actions performed.
 **%%totalCost%%**  -  The total costs for all animals.
 **%%spouse%%**  -  The farmer's spouse's name (if married), the value of whoChecks otherwise.
- 
+
 The dialog groups in the file, and a quick explanation of when each are used:
- 
+
 **Xdialog** - Some specific dialogs used when the spouse or non-character check the pots.
 **greeting** - Greetings the checker will use when addressing the farmer.
 **unfinishedmoney** - Comments the character checker will make when they weren't able to finish on account of no money.
@@ -116,10 +116,12 @@ The dialog groups in the file, and a quick explanation of when each are used:
 
 This project will maintain Open Source [here](https://github.com/WuZhuoran/Stardew_AnimalSitter).
 
+For i18n and translation support. Just Add your languages in `i18n` folders.
+
 We appreciate all contributions. Feel Free to raise any issues or pull requests.
 
 ## License
 
 NOTE: Original Mod Use Apache License. In this repo, MIT License is used. Will update when necessary.
 
-MIT @ Oliver
+MIT @ [Oliver](https://github.com/WuZhuoran)
