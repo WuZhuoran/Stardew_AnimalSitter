@@ -10,7 +10,6 @@ using StardewValley.Buildings;
 using StardewValley.Objects;
 using AnimalSitter.Common;
 using Object = StardewValley.Object;
-using Microsoft.Xna.Framework.Graphics;
 using AnimalSitter.Integrations.GenericModConfigMenu;
 using Microsoft.Xna.Framework.Input;
 
@@ -79,6 +78,7 @@ namespace AnimalSitter
             this.Config = this.Helper.ReadConfig<ModConfig>();
             this.DialogueManager = new DialogueManager(this.Config, helper.ModContent, this.Monitor);
             this.ChestManager = new ChestManager(this.Monitor);
+            I18n.Init(helper.Translation);
 
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
@@ -103,79 +103,79 @@ namespace AnimalSitter
             );
 
             configMenu.AddKeybind(mod: this.ModManifest,
-                name: () => "KeyBind",
-                tooltip: () => "The key that you press to tell your animal helper to get to work. This defaults to the 'O' key.",
+                name: () => I18n.Config_KeyBind(),
+                tooltip: () => I18n.Config_KeyBind_Description(),
                 getValue: () => SButtonExtensions.ToSButton((Keys)Enum.Parse(typeof(Keys), this.Config.KeyBind)),
                 setValue: value => this.Config.KeyBind = value.ToString());
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "GrowUpEnabled",
-                tooltip: () => "This open tells your animal helper that you'd like them to use dark magic to instantly bring young animals up to the age where they can become contributing members of your farm. Default is false.",
+                name: () => I18n.Config_GrowUpEnabled(),
+                tooltip: () => I18n.Config_GrowUpEnabled_Description(),
                 getValue: () => this.Config.GrowUpEnabled,
                 setValue: value => this.Config.GrowUpEnabled = value
             );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "MaxHappinessEnabled",
-                tooltip: () => "This option tells your animal helper that you don't care how long (or where) they have to pet your animals, but their job is not done until each animal's happiness is maxed. Default is false.",
+                name: () => I18n.Config_MaxHappinessEnabled(),
+                tooltip: () => I18n.Config_MaxHappinessEnabled_Description(),
                 getValue: () => this.Config.MaxHappinessEnabled,
                 setValue: value => this.Config.MaxHappinessEnabled = value
             );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "MaxFullnessEnabled",
-                tooltip: () => "This option tells your animal helper to feed your animals. A full animal is a producing animal. Default is false.",
+                name: () => I18n.Config_MaxFullnessEnabled(),
+                tooltip: () => I18n.Config_MaxFullnessEnabled_Description(),
                 getValue: () => this.Config.MaxFullnessEnabled,
                 setValue: value => this.Config.MaxFullnessEnabled = value
             );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "HarvestEnabled",
-                tooltip: () => "This tells your animal worker to harvest the animal drops. If you like doing this yourself, then set this to false.",
+                name: () => I18n.Config_HarvestEnabled(),
+                tooltip: () => I18n.Config_HarvestEnabled_Description(),
                 getValue: () => this.Config.HarvestEnabled,
                 setValue: value => this.Config.HarvestEnabled = value
             );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "PettingEnabled",
-                tooltip: () => "This tells your animal worker that you want your animals petted. This is the whole reason I made this mod, so it defaults to true. So if you set this to \"false\", please keep it to yourself. If you enjoy petting each of your animals (because you don't have a hundred of them) then set it to false.",
+                name: () => I18n.Config_PettingEnabled(),
+                tooltip: () => I18n.Config_PettingEnabled_Description(),
                 getValue: () => this.Config.PettingEnabled,
                 setValue: value => this.Config.PettingEnabled = value
             );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "MaxFriendshipEnabled",
-                tooltip: () => "This tells your animal worker whether they have to wear your 'you' mask, so that the affection of the animals is directed toward you, and not the help. Defaults to false.",
+                name: () => I18n.Config_MaxFriendshipEnabled(),
+                tooltip: () => I18n.Config_MaxFriendshipEnabled_Description(),
                 getValue: () => this.Config.MaxFriendshipEnabled,
                 setValue: value => this.Config.MaxFriendshipEnabled = value
             );
 
             configMenu.AddNumberOption(
                 mod: this.ModManifest,
-                name: () => "CostPerAction",
-                tooltip: () => "This is how much to charge per action per animal. There have been some suggestions around this option, and I do have plans to introduce a more complex pricing structure in the future, but for now just make sure this includes all services that you want the animal checker to perform, and average it out over the number of actions. Defaults to 25.",
+                name: () => I18n.Config_CostPerAction(),
+                tooltip: () => I18n.Config_CostPerAction_Description(),
                 getValue: () => this.Config.CostPerAction,
                 setValue: value => this.Config.CostPerAction = value
                 );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "EnableMessages",
-                tooltip: () => "This is whether to enable in-game messages and dialogues revolving around your animal checker. It defaults to true.",
+                name: () => I18n.Config_EnableMessages(),
+                tooltip: () => I18n.Config_EnableMessages_Description(),
                 getValue: () => this.Config.EnableMessages,
                 setValue: value => this.Config.EnableMessages = value
             );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "TakeTrufflesFromPigs",
-                tooltip: () => "Whoever trainedm these pigs did an awful job, as they have a tendency to hide truffles. Where? I'm not exactly sure, but they've got 'em, trust me. With this option enabled, your farm helper will perform a TSA-approved body cavity search and find them. If you love the person who is doing your checking, or if you want your pigs to remain unviolated, or if you consider this cheating, then set it to false.",
+                name: () => I18n.Config_TakeTrufflesFromPigs(),
+                tooltip: () => I18n.Config_TakeTrufflesFromPigs_Description(),
                 getValue: () => this.Config.TakeTrufflesFromPigs,
                 setValue: value => this.Config.TakeTrufflesFromPigs = value
             );
@@ -196,7 +196,7 @@ namespace AnimalSitter
             // Read in dialogue
             this.DialogueManager.ReadInMessages();
 
-            this.Monitor.Log($"chestCoords:{this.ChestCoords.X},{this.ChestCoords.Y}", LogLevel.Trace);
+            this.Monitor.Log(I18n.Log_ChestCoords(x: this.ChestCoords.X, y: this.ChestCoords.Y), LogLevel.Trace);
         }
 
         private void ImportConfiguration()
@@ -204,7 +204,7 @@ namespace AnimalSitter
             if (!Enum.TryParse(this.Config.KeyBind, true, out this.PetKey))
             {
                 this.PetKey = SButton.O;
-                this.Monitor.Log($"Error parsing key binding; defaulted to {this.PetKey}.");
+                this.Monitor.Log(I18n.Log_ErrorParsingKeyBingding(default_value: this.PetKey));
             }
 
             this.PettingEnabled = this.Config.PettingEnabled;
@@ -223,8 +223,8 @@ namespace AnimalSitter
 
             if (this.Config.CostPerAction < 0)
             {
-                this.Monitor.Log("I'll do it for free, but I'm not paying YOU to take care of YOUR stinking animals!", LogLevel.Trace);
-                this.Monitor.Log("Setting costPerAction to 0.", LogLevel.Trace);
+                this.Monitor.Log(I18n.Log_DoingFree(), LogLevel.Trace);
+                this.Monitor.Log(I18n.Log_SetCostTo0(), LogLevel.Trace);
                 this.CostPerAnimal = 0;
             }
             else
@@ -249,7 +249,7 @@ namespace AnimalSitter
                 }
                 catch (Exception ex)
                 {
-                    this.Monitor.Log($"Exception onKeyReleased: {ex}", LogLevel.Error);
+                    this.Monitor.Log(I18n.Log_ExceptionOnkeyreleased(ex: ex), LogLevel.Error);
                 }
             }
         }
@@ -268,13 +268,13 @@ namespace AnimalSitter
                         animal.pet(Game1.player);
                         stats.AnimalsPet++;
 
-                        this.Monitor.Log($"Petting animal: {animal.Name}", LogLevel.Trace);
+                        this.Monitor.Log(I18n.Log_PettingAnimal(animal_name: animal.Name), LogLevel.Trace);
                     }
 
 
                     if (this.GrowUpEnabled && animal.isBaby())
                     {
-                        this.Monitor.Log($"Aging animal to mature+1 days: {animal.Name}", LogLevel.Trace);
+                        this.Monitor.Log(I18n.Log_AgingAnimal(animal_name: animal.Name), LogLevel.Trace);
 
                         animal.age.Value = animal.age.Value + 1;
                         animal.reload(animal.home);
@@ -283,7 +283,7 @@ namespace AnimalSitter
 
                     if (this.MaxFullnessEnabled && animal.fullness.Value < byte.MaxValue)
                     {
-                        this.Monitor.Log($"Feeding animal: {animal.Name}", LogLevel.Trace);
+                        this.Monitor.Log(I18n.Log_FeedingAnimal(animal_name: animal.Name), LogLevel.Trace);
 
                         animal.fullness.Value = byte.MaxValue;
                         stats.Fed++;
@@ -291,7 +291,7 @@ namespace AnimalSitter
 
                     if (this.MaxHappinessEnabled && animal.happiness.Value < byte.MaxValue)
                     {
-                        this.Monitor.Log($"Maxing Happiness of animal {animal.Name}", LogLevel.Trace);
+                        this.Monitor.Log(I18n.Log_MaxHappinessAnimal(animal_name: animal.Name), LogLevel.Trace);
 
                         animal.happiness.Value = byte.MaxValue;
                         stats.MaxHappiness++;
@@ -299,7 +299,7 @@ namespace AnimalSitter
 
                     if (this.MaxFriendshipEnabled && animal.friendshipTowardFarmer.Value < 1000)
                     {
-                        this.Monitor.Log($"Maxing Friendship of animal {animal.Name}", LogLevel.Trace);
+                        this.Monitor.Log(I18n.Log_MaxFriendshipAnimal(animal_name: animal.Name), LogLevel.Trace);
 
                         animal.friendshipTowardFarmer.Value = 1000;
                         stats.MaxFriendship++;
@@ -307,7 +307,7 @@ namespace AnimalSitter
 
                     if (animal.currentProduce.Value != null && Convert.ToInt32(animal.currentProduce.Value) > 0 && this.HarvestEnabled)
                     {
-                        this.Monitor.Log($"Has produce: {animal.Name} {animal.currentProduce}", LogLevel.Trace);
+                        this.Monitor.Log(I18n.Log_HasProduce(animal_name: animal.Name, animal_currentProduce: animal.currentProduce.Name), LogLevel.Trace);
 
                         if (animal.type.Value == "Pig")
                         {
@@ -333,7 +333,7 @@ namespace AnimalSitter
                 }
                 catch (Exception ex)
                 {
-                    this.Monitor.Log($"Exception onKeyReleased: {ex}", LogLevel.Error);
+                    this.Monitor.Log(I18n.Log_ExceptionOnkeyreleased(ex: ex), LogLevel.Error);
                 }
             }
 
@@ -352,18 +352,18 @@ namespace AnimalSitter
                 if (this.MessagesEnabled)
                     this.ShowMessage(actions, totalCost, doesPlayerHaveEnoughCash, gatheringOnly, stats);
 
-                this.Monitor.Log($"Animal sitter performed {actions} actions. Total cost: {totalCost}g", LogLevel.Trace);
+                this.Monitor.Log(I18n.Log_TotalCost(actions: actions, total_cost: totalCost), LogLevel.Trace);
 
             }
             else if (actions == 0 && this.CostPerAnimal > 0)
             {
                 if (this.MessagesEnabled)
                 {
-                    HUDMessage msg = new HUDMessage("There's nothing to do for the animals right now.");
+                    HUDMessage msg = new HUDMessage(I18n.Log_NothingToDo());
                     Game1.addHUDMessage(msg);
                 }
 
-                this.Monitor.Log("There's nothing to do for the animals right now.", LogLevel.Trace);
+                this.Monitor.Log(I18n.Log_NothingToDo(), LogLevel.Trace);
             }
         }
 
@@ -411,7 +411,7 @@ namespace AnimalSitter
                     }
                     else
                     {
-                        this.Monitor.Log("Inventory full, could not add animal product.", LogLevel.Trace);
+                        this.Monitor.Log(I18n.Log_InventoryFull(), LogLevel.Trace);
                     }
                 }
 
@@ -440,7 +440,7 @@ namespace AnimalSitter
                     {
                         Object obj = keyvalue.Value;
 
-                        this.Monitor.Log($"Found coop object: {obj.Name} / {obj.Category}/{obj.isAnimalProduct()}", LogLevel.Trace);
+                        this.Monitor.Log(I18n.Log_FoundCoopObject(obj_name: obj.Name, obj_category: obj.Category, obj_isAnimalProduct: obj.isAnimalProduct()), LogLevel.Trace);
 
                         if (obj.isAnimalProduct() || obj.ParentSheetIndex == 107 && obj.Name != "Plush Bunny")
                         {
@@ -452,7 +452,7 @@ namespace AnimalSitter
                             }
                             else
                             {
-                                this.Monitor.Log("Inventory full, could not add animal product.", LogLevel.Trace);
+                                this.Monitor.Log(I18n.Log_InventoryFull(), LogLevel.Trace);
                             }
                         }
                     }
@@ -521,16 +521,16 @@ namespace AnimalSitter
                 {
                     if (Game1.player.catPerson)
                     {
-                        message += "Meow..";
+                        message += I18n.Log_Meow();
                     }
                     else
                     {
-                        message += "Woof.";
+                        message += I18n.Log_Woof();
                     }
                 }
                 else
                 {
-                    message += "Your imaginary pet has taken care of your animals.";
+                    message += I18n.Log_ImaginaryPetTakeCare();
                 }
 
                 HUDMessage msg = new HUDMessage(message);
