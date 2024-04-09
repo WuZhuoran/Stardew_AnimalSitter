@@ -61,6 +61,8 @@ namespace AnimalSitter
         // A string defining the locations of specific chests.
         private string ChestDefs = "";
 
+        private bool isFirstTimeTruffle = true;
+
         private ModConfig Config;
 
         private DialogueManager DialogueManager;
@@ -83,6 +85,12 @@ namespace AnimalSitter
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+        }
+
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            this.isFirstTimeTruffle = true;
         }
 
         /// <summary>Raised after the player loads a save slot.</summary>
@@ -311,12 +319,13 @@ namespace AnimalSitter
 
                         if (animal.type.Value == "Pig")
                         {
-                            if (this.TakeTrufflesFromPigs)
+                            if (this.TakeTrufflesFromPigs && this.isFirstTimeTruffle)
                             {
                                 Object toAdd = new Object(animal.currentProduce.Value, 1, false, -1, animal.produceQuality.Value);
                                 this.AddItemToInventory(toAdd, farmer);
 
                                 stats.TrufflesHarvested++;
+                                this.isFirstTimeTruffle = false;
                             }
                         }
                         else
