@@ -12,6 +12,7 @@ using AnimalSitter.Common;
 using Object = StardewValley.Object;
 using AnimalSitter.Integrations.GenericModConfigMenu;
 using Microsoft.Xna.Framework.Input;
+using System.Reflection;
 
 namespace AnimalSitter
 {
@@ -65,9 +66,11 @@ namespace AnimalSitter
 
         private ModConfig Config;
 
-        private DialogueManager DialogueManager;
+        // private DialogueManager DialogueManager;
 
         private ChestManager ChestManager;
+
+        private readonly Random RandomDialogue = new Random();
 
 
         /*********
@@ -78,7 +81,7 @@ namespace AnimalSitter
         public override void Entry(IModHelper helper)
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
-            this.DialogueManager = new DialogueManager(this.Config, helper.ModContent, this.Monitor);
+            // this.DialogueManager = new DialogueManager(this.Config, helper.ModContent, this.Monitor);
             this.ChestManager = new ChestManager(this.Monitor);
             I18n.Init(helper.Translation);
 
@@ -202,7 +205,7 @@ namespace AnimalSitter
             this.ChestManager.SetDefault(this.ChestCoords);
 
             // Read in dialogue
-            this.DialogueManager.ReadInMessages();
+            // this.DialogueManager.ReadInMessages();
 
             this.Monitor.Log(I18n.Log_ChestCoords(x: this.ChestCoords.X, y: this.ChestCoords.Y), LogLevel.Trace);
         }
@@ -551,16 +554,20 @@ namespace AnimalSitter
                 {
                     if (Game1.player.isMarriedOrRoommates())
                     {
-                        message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(1, "Xdialog"), stats, this.Config);
+                        string spouse = Game1.player.isMarriedOrRoommates() ? Game1.player.getSpouse().getName() : this.Checker;
+                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(1, "Xdialog"), stats, this.Config);
+                        message += I18n.Dialog_Xdialog1(spouse: spouse);
                     }
                     else
                     {
-                        message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(2, "Xdialog"), stats, this.Config);
+                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(2, "Xdialog"), stats, this.Config);
+                        message += I18n.Dialog_Xdialog2(num_actions: stats.NumActions);
                     }
 
                     if (totalCost > 0 && this.CostPerAnimal > 0)
                     {
-                        message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(3, "Xdialog"), stats, this.Config);
+                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(3, "Xdialog"), stats, this.Config);
+                        message += I18n.Dialog_Xdialog3(total_cost: stats.TotalCost);
                     }
 
                     HUDMessage msg = new HUDMessage(message);
@@ -568,11 +575,13 @@ namespace AnimalSitter
                 }
                 else if (gatheringOnly)
                 {
-                    message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(4, "Xdialog"), stats, this.Config);
+                    // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(4, "Xdialog"), stats, this.Config);
+                    message += I18n.Dialog_Xdialog4(checker: this.Checker);
 
                     if (totalCost > 0 && this.CostPerAnimal > 0)
                     {
-                        message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(3, "Xdialog"), stats, this.Config);
+                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(3, "Xdialog"), stats, this.Config);
+                        message += I18n.Dialog_Xdialog3(total_cost: stats.TotalCost);
                     }
 
                     HUDMessage msg = new HUDMessage(message);
@@ -590,18 +599,22 @@ namespace AnimalSitter
                             portrait = "$8";
                         }
 
-                        message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("greeting"), stats, this.Config);
-                        message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(5, "Xdialog"), stats, this.Config);
+                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("greeting"), stats, this.Config);
+                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(5, "Xdialog"), stats, this.Config);
+                        message += I18n.Dialog_Greeting1(name: Game1.player.Name);
+                        message += I18n.Dialog_Xdialog5();
 
                         if (this.CostPerAnimal > 0)
                         {
                             if (doesPlayerHaveEnoughCash)
                             {
-                                message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(6, "Xdialog"), stats, this.Config);
+                                // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(6, "Xdialog"), stats, this.Config);
+                                message += I18n.Dialog_Xdialog6(total_cost: stats.TotalCost);
                             }
                             else
                             {
-                                message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("unfinishedmoney"), stats, this.Config);
+                                // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("unfinishedmoney"), stats, this.Config);
+                                message += this.GetRandomMessage(messageStoreName: "unfinishedmoney", low: 1, high: 8);
                             }
                         }
                         else
@@ -610,7 +623,8 @@ namespace AnimalSitter
                             //message += portrait + "#$e#";
                         }
 
-                        message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("smalltalk"), stats, this.Config);
+                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("smalltalk"), stats, this.Config);
+                        message += this.GetRandomMessage(messageStoreName: "smalltalk", low: 1, high: 14);
                         message += portrait + "#$e#";
 
                         character.CurrentDialogue.Push(new Dialogue(character, message));
@@ -619,7 +633,8 @@ namespace AnimalSitter
                     else
                     {
                         //message += checker + " has performed " + numActions + " for your animals.";
-                        message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(7, "Xdialog"), stats, this.Config);
+                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(7, "Xdialog"), stats, this.Config);
+                        message += I18n.Dialog_Xdialog7(checker: this.Checker, num_actions: stats.NumActions);
                         HUDMessage msg = new HUDMessage(message);
                         Game1.addHUDMessage(msg);
                     }
@@ -637,6 +652,78 @@ namespace AnimalSitter
                 if (building.indoors.Value != null && building.indoors.Value.GetType() == typeof(AnimalHouse))
                     animals.AddRange(((AnimalHouse)building.indoors.Value).animals.Values.ToList());
             return animals;
+        }
+
+        private string GetRandomMessage(string messageStoreName, int low=1, int high=4)
+        {
+            var rand = RandomDialogue.Next(low, high + 1);
+
+            if (messageStoreName == "greeting")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Greeting1(name: Game1.player.Name),
+                    2 => I18n.Dialog_Greeting2(name: Game1.player.Name),
+                    3 => I18n.Dialog_Greeting3(name: Game1.player.Name),
+                    4 => I18n.Dialog_Greeting4(name: Game1.player.Name),
+                    5 => I18n.Dialog_Greeting5(name: Game1.player.Name),
+                    6 => I18n.Dialog_Greeting6(name: Game1.player.Name),
+                    7 => I18n.Dialog_Greeting7(name: Game1.player.Name),
+                    _ => I18n.Dialog_Greeting1(name: Game1.player.Name),
+                };
+            }
+            else if (messageStoreName == "unfinishedmoney")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Unfinishedmoney1(),
+                    2 => I18n.Dialog_Unfinishedmoney2(),
+                    3 => I18n.Dialog_Unfinishedmoney3(),
+                    4 => I18n.Dialog_Unfinishedmoney4(),
+                    5 => I18n.Dialog_Unfinishedmoney5(),
+                    6 => I18n.Dialog_Unfinishedmoney6(),
+                    7 => I18n.Dialog_Unfinishedmoney7(),
+                    8 => I18n.Dialog_Unfinishedmoney8(),
+                    _ => I18n.Dialog_Unfinishedmoney1(),
+                };
+            }
+            else if (messageStoreName == "unfinishedinventory")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Unfinishedinventory1(),
+                    2 => I18n.Dialog_Unfinishedinventory2(),
+                    3 => I18n.Dialog_Unfinishedinventory3(),
+                    4 => I18n.Dialog_Unfinishedinventory4(),
+                    _ => I18n.Dialog_Unfinishedinventory1(),
+                };
+            }
+            else if (messageStoreName == "smalltalk")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Smalltalk1(),
+                    2 => I18n.Dialog_Smalltalk2(),
+                    3 => I18n.Dialog_Smalltalk3(),
+                    4 => I18n.Dialog_Smalltalk4(),
+                    5 => I18n.Dialog_Smalltalk5(),
+                    6 => I18n.Dialog_Smalltalk6(),
+                    7 => I18n.Dialog_Smalltalk7(),
+                    8 => I18n.Dialog_Smalltalk8(),
+                    9 => I18n.Dialog_Smalltalk9(),
+                    10 => I18n.Dialog_Smalltalk10(),
+                    11 => I18n.Dialog_Smalltalk11(),
+                    12 => I18n.Dialog_Smalltalk12(),
+                    13 => I18n.Dialog_Smalltalk13(),
+                    14 => I18n.Dialog_Smalltalk14(),
+                    _ => I18n.Dialog_Smalltalk1(),
+                };
+            }
+            else
+            {
+                return "...$h#$e#";
+            }
+            
         }
 
     }
