@@ -77,7 +77,7 @@ The first specifies the item ID and the chest coordinates, this knows to check f
 
 ### Customization
 
-The `dialog.xnb` file will allow you to customize the dialog to your liking.  I've also included the dialog.yaml source file, but the mod will read it from the XNB file.  If you don't know how to do it, google "how to unpack and repack stardew valley mods". 
+The `dialog.xnb` file will allow you to customize the dialog to your liking.  I've also included the dialog.yaml source file, but the mod will read it from the XNB file.  If you don't know how to do it, google "how to unpack and repack stardew valley mods".
 
 The dialogue elements are arranged in a name_index format. If the name starts with a capital 'X', that means those messages need to stay roughly in that order and in the same format for the dialog to make sense.  The number is important.
 
@@ -86,7 +86,7 @@ All other elements can be added to, and modified because they are used randomly 
 Also you'll see that I added a few names down at the bottom,"Shane_1", "Shane_2", "Leah_1", for example.  You can add any other Stardew characters dialog to the file in that same format.  Those dialogues will be merged in with the "smalltalk" group if your "whoChecks" is set to one of the characters.
 
 Most of the notation that existing SDV dialogs use will work(for example @ is replaced by the name of the farmer).  There's also notation added to use values from this mod in the dialog, they are (along with a description)
- 
+
 **%%animalsPet%%**  -  The number of animals that were petted.
 **%%trufflesHarvested%%**  -  The number of truffles that were harvested.
 **%%productsHarvested%%**  -  The number of other animal products that were harvested (I promise to allow more granular tracking in the future).
@@ -111,6 +111,7 @@ The dialog groups in the file, and a quick explanation of when each are used:
 
 * Original [Mod](https://www.nexusmods.com/stardewvalley/mods/581) and [Code](https://github.com/jdusbabek/stardewvalley) from [John Dusbabek](https://github.com/jdusbabek)
 * Unofficial Fix [Mod](http://forums.stardewvalley.net/threads/unofficial-mod-updates.2096/post-22271)
+* Chinese Translation: [codeyz](https://www.nexusmods.com/stardewvalley/users/51596836) with its original translation [mod](https://www.nexusmods.com/stardewvalley/mods/22210)
 
 ## Contribution
 
