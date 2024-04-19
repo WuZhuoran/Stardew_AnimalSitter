@@ -328,7 +328,6 @@ namespace AnimalSitter
                                 this.AddItemToInventory(toAdd, farmer);
 
                                 stats.TrufflesHarvested++;
-                                this.isFirstTimeTruffle = false;
                             }
                         }
                         else
@@ -349,6 +348,7 @@ namespace AnimalSitter
                 }
             }
 
+            this.isFirstTimeTruffle = false;
             this.HarvestTruffles(stats);
             this.HarvestCoops(stats);
 
@@ -593,16 +593,45 @@ namespace AnimalSitter
                     if (character != null)
                     {
                         //this.isCheckerCharacter = true;
-                        string portrait = "";
+                        // string portrait = "";
                         if (character.Name.Equals("Shane"))
                         {
-                            portrait = "$8";
+                            // portrait = "$8";
+                            message += this.GetRandomMessage(messageStoreName: "greeting", low: 1, high: 7);
+                            message += this.GetRandomMessage(messageStoreName: "Shane", low: 1, high: 2);
+                        }
+                        else if (character.Name.Equals("Haley"))
+                        {
+                            // portrait = "$8";
+                            message += this.GetRandomMessage(messageStoreName: "greeting", low: 1, high: 7);
+                            message += this.GetRandomMessage(messageStoreName: "Haley", low: 1, high: 2);
+                        }
+                        else if (character.Name.Equals("Alex"))
+                        {
+                            // portrait = "$8";
+                            message += this.GetRandomMessage(messageStoreName: "greeting", low: 1, high: 7);
+                            message += this.GetRandomMessage(messageStoreName: "Alex", low: 1, high: 2);
+                        }
+                        else if (character.Name.Equals("Leah"))
+                        {
+                            // portrait = "$8";
+                            message += this.GetRandomMessage(messageStoreName: "greeting", low: 1, high: 7);
+                            message += this.GetRandomMessage(messageStoreName: "Leah", low: 1, high: 2);
+                        }
+                        else if (character.Name.Equals("Marnie"))
+                        {
+                            // portrait = "$8";
+                            message += this.GetRandomMessage(messageStoreName: "greeting", low: 1, high: 7);
+                            message += this.GetRandomMessage(messageStoreName: "Marnie", low: 1, high: 2);
+                        }
+                        else
+                        {
+                            // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("greeting"), stats, this.Config);
+                            // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(5, "Xdialog"), stats, this.Config);
+                            message += this.GetRandomMessage(messageStoreName: "greeting", low: 1, high: 7);
+                            message += I18n.Dialog_Xdialog5();
                         }
 
-                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("greeting"), stats, this.Config);
-                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(5, "Xdialog"), stats, this.Config);
-                        message += I18n.Dialog_Greeting1(name: Game1.player.Name);
-                        message += I18n.Dialog_Xdialog5();
 
                         if (this.CostPerAnimal > 0)
                         {
@@ -625,9 +654,9 @@ namespace AnimalSitter
 
                         // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("smalltalk"), stats, this.Config);
                         message += this.GetRandomMessage(messageStoreName: "smalltalk", low: 1, high: 14);
-                        message += portrait + "#$e#";
+                        // message += portrait + "#$e#";
 
-                        character.CurrentDialogue.Push(new Dialogue(character, message));
+                        character.CurrentDialogue.Push(new Dialogue(character, "", message));
                         Game1.drawDialogue(character);
                     }
                     else
@@ -717,6 +746,48 @@ namespace AnimalSitter
                     13 => I18n.Dialog_Smalltalk13(),
                     14 => I18n.Dialog_Smalltalk14(),
                     _ => I18n.Dialog_Smalltalk1(),
+                };
+            }
+            else if (messageStoreName == "Shane")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Shane1(),
+                    2 => I18n.Dialog_Shane2(),
+                    _ => I18n.Dialog_Shane1(),
+                };
+            }
+            else if (messageStoreName == "Haley")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Haley1(),
+                    2 => I18n.Dialog_Haley2(),
+                    _ => I18n.Dialog_Haley1(),
+                };
+            }
+            else if (messageStoreName == "Alex")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Alex1(),
+                    _ => I18n.Dialog_Alex1(),
+                };
+            }
+            else if (messageStoreName == "Leah")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Leah1(),
+                    _ => I18n.Dialog_Leah1(),
+                };
+            }
+            else if (messageStoreName == "Marnie")
+            {
+                return rand switch
+                {
+                    1 => I18n.Dialog_Marnie1(),
+                    _ => I18n.Dialog_Marnie1(),
                 };
             }
             else

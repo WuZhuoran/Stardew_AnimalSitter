@@ -75,9 +75,9 @@ Here's the default configuration:
 
 The first specifies the item ID and the chest coordinates, this knows to check for a chest on the farm at that location. The second specifies an item id, a chest location, and a building. This will look for a chest at (7,4) in the FarmHouse (which in the starting house is the spot next to the fireplace).
 
-### Customization
+### Customization on Dialogs
 
-The `dialog.xnb` file will allow you to customize the dialog to your liking.  I've also included the dialog.yaml source file, but the mod will read it from the XNB file.  If you don't know how to do it, google "how to unpack and repack stardew valley mods".
+Now our mod support [SMAPI-ModTranslationClassBuilder](https://github.com/Pathoschild/SMAPI-ModTranslationClassBuilder) Framework. So all the strings used in mod will stored in [i18n/default.json](AnimalSitter/i18n/default.json). If you want to add more Dialog or Strings, you need to modify strings inside `default.json` or yoru specific `language.json` file.
 
 The dialogue elements are arranged in a name_index format. If the name starts with a capital 'X', that means those messages need to stay roughly in that order and in the same format for the dialog to make sense.  The number is important.
 
@@ -87,25 +87,26 @@ Also you'll see that I added a few names down at the bottom,"Shane_1", "Shane_2"
 
 Most of the notation that existing SDV dialogs use will work(for example @ is replaced by the name of the farmer).  There's also notation added to use values from this mod in the dialog, they are (along with a description)
 
-**%%animalsPet%%**  -  The number of animals that were petted.
-**%%trufflesHarvested%%**  -  The number of truffles that were harvested.
-**%%productsHarvested%%**  -  The number of other animal products that were harvested (I promise to allow more granular tracking in the future).
-**%%aged%%**  -  The number of animals that were aged to maturity.
-**%%fed%%**  -  The number of animals that were fed.
-**%%maxHappiness%%**  -  The number of animals who had their happiness maxed.
-**%%maxFriendship%%**  -  The number animals that had their friendship toward the farmer maxed out.
-**%%numActions%%**  -  The total number of actions performed.
-**%%totalCost%%**  -  The total costs for all animals.
-**%%spouse%%**  -  The farmer's spouse's name (if married), the value of whoChecks otherwise.
+**{{animalsPet}}**  -  The number of animals that were petted.
+**{{trufflesHarvested}}**  -  The number of truffles that were harvested.
+**{{productsHarvested}}**  -  The number of other animal products that were harvested (I promise to allow more granular tracking in the future).
+**{{aged}}**  -  The number of animals that were aged to maturity.
+**{{fed}}**  -  The number of animals that were fed.
+**{{maxHappiness}}**  -  The number of animals who had their happiness maxed.
+**{{maxFriendship}}**  -  The number animals that had their friendship toward the farmer maxed out.
+**{{numActions}}**  -  The total number of actions performed.
+**{{totalCost}}**  -  The total costs for all animals.
+**{{spouse}}**  -  The farmer's spouse's name (if married), the value of whoChecks otherwise.
 
 The dialog groups in the file, and a quick explanation of when each are used:
 
 **Xdialog** - Some specific dialogs used when the spouse or non-character check the pots.
 **greeting** - Greetings the checker will use when addressing the farmer.
 **unfinishedmoney** - Comments the character checker will make when they weren't able to finish on account of no money.
-**freebies** - Comments the character checker will make when allowFreebies is true, and the cost of services was more than the farmer has on hand. (Not really used in this mod yet)
 **unfinishedinventory** - Comments the character checker will make when they weren't able to finish on account of not having anywhere to deliver the goods. (Not really used in this mod yet)
 **smalltalk & character names** - Comments that are thrown in at the end of most conversations.
+
+Note: If you add more strings, the mod need to be updated to show those new messages. If you want to contribute, feel free to edit and submit Pull Request to [i18n/default.json](https://github.com/WuZhuoran/Stardew_AnimalSitter/blob/main/AnimalSitter/i18n/default.json). I will update the mod ASAP.
 
 ## Credit
 
@@ -117,7 +118,7 @@ The dialog groups in the file, and a quick explanation of when each are used:
 
 This project will maintain Open Source [here](https://github.com/WuZhuoran/Stardew_AnimalSitter).
 
-For i18n and translation support. Just Add your languages in `i18n` folders.
+For i18n and translation support. Just Add your languages in `i18n` folders or Add more strings to `default.json` file.
 
 We appreciate all contributions. Feel Free to raise any issues or pull requests.
 
