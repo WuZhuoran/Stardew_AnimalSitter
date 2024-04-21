@@ -120,14 +120,23 @@ namespace AnimalSitter
                 name: () => I18n.Config_KeyBind(),
                 tooltip: () => I18n.Config_KeyBind_Description(),
                 getValue: () => SButtonExtensions.ToSButton((Keys)Enum.Parse(typeof(Keys), this.Config.KeyBind)),
-                setValue: value => this.Config.KeyBind = value.ToString());
+                setValue: value => 
+                {
+                    this.Config.KeyBind = value.ToString();
+                    this.ImportConfiguration();
+                });
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
                 name: () => I18n.Config_GrowUpEnabled(),
                 tooltip: () => I18n.Config_GrowUpEnabled_Description(),
                 getValue: () => this.Config.GrowUpEnabled,
-                setValue: value => this.Config.GrowUpEnabled = value
+                setValue: value => 
+                {
+                    // this.GrowUpEnabled = value;
+                    this.Config.GrowUpEnabled = value;
+                    this.ImportConfiguration();
+                }
             );
 
             configMenu.AddBoolOption(
@@ -135,7 +144,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_MaxHappinessEnabled(),
                 tooltip: () => I18n.Config_MaxHappinessEnabled_Description(),
                 getValue: () => this.Config.MaxHappinessEnabled,
-                setValue: value => this.Config.MaxHappinessEnabled = value
+                setValue: value =>
+                {
+                    // this.MaxHappinessEnabled = value;
+                    this.Config.MaxHappinessEnabled = value;
+                    this.ImportConfiguration();
+                }
             );
 
             configMenu.AddBoolOption(
@@ -143,7 +157,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_MaxFullnessEnabled(),
                 tooltip: () => I18n.Config_MaxFullnessEnabled_Description(),
                 getValue: () => this.Config.MaxFullnessEnabled,
-                setValue: value => this.Config.MaxFullnessEnabled = value
+                setValue: value => 
+                {
+                    // this.MaxFullnessEnabled = value; 
+                    this.Config.MaxFullnessEnabled = value;
+                    this.ImportConfiguration();
+                }
             );
 
             configMenu.AddBoolOption(
@@ -151,7 +170,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_HarvestEnabled(),
                 tooltip: () => I18n.Config_HarvestEnabled_Description(),
                 getValue: () => this.Config.HarvestEnabled,
-                setValue: value => this.Config.HarvestEnabled = value
+                setValue: value => 
+                {
+                    // this.HarvestEnabled = value; 
+                    this.Config.HarvestEnabled = value;
+                    this.ImportConfiguration();
+                }
             );
 
             configMenu.AddBoolOption(
@@ -159,7 +183,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_PettingEnabled(),
                 tooltip: () => I18n.Config_PettingEnabled_Description(),
                 getValue: () => this.Config.PettingEnabled,
-                setValue: value => this.Config.PettingEnabled = value
+                setValue: value => 
+                {
+                    // this.PettingEnabled = value; 
+                    this.Config.PettingEnabled = value;
+                    this.ImportConfiguration();
+                }
             );
 
             configMenu.AddBoolOption(
@@ -167,7 +196,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_PettingPetEnabled(),
                 tooltip: () => I18n.Config_PettingPetEnabled_Description(),
                 getValue: () => this.Config.PettingPetEnabled,
-                setValue: value => this.Config.PettingPetEnabled = value
+                setValue: value => 
+                {
+                    // this.PettingPetEnabled = value; 
+                    this.Config.PettingPetEnabled = value;
+                    this.ImportConfiguration();
+                }
             );
 
             configMenu.AddBoolOption(
@@ -175,7 +209,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_MaxFriendshipEnabled(),
                 tooltip: () => I18n.Config_MaxFriendshipEnabled_Description(),
                 getValue: () => this.Config.MaxFriendshipEnabled,
-                setValue: value => this.Config.MaxFriendshipEnabled = value
+                setValue: value => 
+                {
+                    // this.MaxFriendshipEnabled = value; 
+                    this.Config.MaxFriendshipEnabled = value;
+                    this.ImportConfiguration();
+                }
             );
 
             configMenu.AddNumberOption(
@@ -183,7 +222,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_CostPerAction(),
                 tooltip: () => I18n.Config_CostPerAction_Description(),
                 getValue: () => this.Config.CostPerAction,
-                setValue: value => this.Config.CostPerAction = value
+                setValue: value => 
+                {
+                    // this.CostPerAnimal = value;
+                    this.Config.CostPerAction = value;
+                    this.ImportConfiguration();
+                }
                 );
 
             configMenu.AddTextOption(
@@ -191,7 +235,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_WhoChecks(),
                 tooltip: () => I18n.Config_WhoChecks_Description(),
                 getValue: () => this.Config.WhoChecks,
-                setValue: value => this.Config.WhoChecks = value,
+                setValue: value =>
+                {
+                    // this.Checker = value;
+                    this.Config.WhoChecks = value;
+                    this.ImportConfiguration();
+                },
                 allowedValues: new string[] { "spouse", "pet", "Shane", "Haley", "Alex", "Leah", "Marnie" }
             );
 
@@ -200,7 +249,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_EnableMessages(),
                 tooltip: () => I18n.Config_EnableMessages_Description(),
                 getValue: () => this.Config.EnableMessages,
-                setValue: value => this.Config.EnableMessages = value
+                setValue: value => 
+                {
+                    // this.MessagesEnabled = value;
+                    this.Config.EnableMessages = value;
+                    this.ImportConfiguration();
+                }
             );
 
             configMenu.AddBoolOption(
@@ -208,7 +262,12 @@ namespace AnimalSitter
                 name: () => I18n.Config_TakeTrufflesFromPigs(),
                 tooltip: () => I18n.Config_TakeTrufflesFromPigs_Description(),
                 getValue: () => this.Config.TakeTrufflesFromPigs,
-                setValue: value => this.Config.TakeTrufflesFromPigs = value
+                setValue: value =>
+                {
+                    // this.TakeTrufflesFromPigs = value;
+                    this.Config.TakeTrufflesFromPigs = value;
+                    this.ImportConfiguration();
+                }
             );
         }
 
@@ -312,21 +371,10 @@ namespace AnimalSitter
                 this.WaterPetBowl();
             }
 
-
-
             foreach (FarmAnimal animal in this.GetAnimals())
             {
                 try
                 {
-                    if (animal.wasPet.Value && this.PettingPetEnabled)
-                    {
-                        this.Monitor.Log($"{animal.Name}");
-                        animal.pet(Game1.player);
-                        stats.AnimalsPet++;
-
-                        this.Monitor.Log(I18n.Log_PettingAnimal(animal_name: animal.Name), LogLevel.Trace);
-                    }
-
                     if (!animal.wasPet.Value && this.PettingEnabled)
                     {
                         animal.pet(Game1.player);
