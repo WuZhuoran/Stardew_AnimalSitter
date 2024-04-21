@@ -32,6 +32,7 @@ Here's the default configuration:
 "maxFullnessEnabled": false,
 "harvestEnabled": true,
 "pettingEnabled": true,
+"PettingPetEnabled": true,
 "maxFriendshipEnabled": false,
 "verboseLogging": false,
 "costPerAction": 0,
@@ -54,6 +55,8 @@ Here's the default configuration:
 **harvestEnabled**: This tells your animal worker to harvest the animal drops. If you like doing this yourself, then set this to false.
 
 **pettingEnabled**: This tells your animal worker that you want your animals petted. This is the whole reason I made this mod, so it defaults to true. So if you set this to "false", please keep it to yourself. If you enjoy petting each of your animals (because you don't have a hundred of them) then set it to false.
+
+**PettingPetEnabled**: This will give love to your pet and water all the PetBowls.
 
 **maxFriendshipEnabled**: This tells your animal worker whether they have to wear your "you" mask, so that the affection of the animals is directed toward you, and not the help. Defaults to false.
 

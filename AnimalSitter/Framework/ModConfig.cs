@@ -11,6 +11,7 @@ namespace AnimalSitter.Framework
         public bool MaxFullnessEnabled { get; set; }
         public bool HarvestEnabled { get; set; } = true;
         public bool PettingEnabled { get; set; } = true;
+        public bool PettingPetEnabled { get; set; } = true;
         public bool MaxFriendshipEnabled { get; set; }
         public int CostPerAction { get; set; } = 25;
         public string WhoChecks { get; set; } = "spouse";

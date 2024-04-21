@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>AnimalSitter</AssemblyName>
     <RootNamespace>AnimalSitter</RootNamespace>
-    <Version>2.2.3</Version>
+    <Version>2.3.0</Version>
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -12,12 +12,15 @@
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="i18n\default.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

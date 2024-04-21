@@ -12,7 +12,7 @@ using AnimalSitter.Common;
 using Object = StardewValley.Object;
 using AnimalSitter.Integrations.GenericModConfigMenu;
 using Microsoft.Xna.Framework.Input;
-using System.Reflection;
+using StardewValley.Characters;
 
 namespace AnimalSitter
 {
@@ -35,8 +35,11 @@ namespace AnimalSitter
         // Whether to harvest animal drops while visiting.
         private bool HarvestEnabled = true;
 
-        // Whether to pet animals as they are visited.
+        // Whether to pet animals (Not Pets) as they are visited.
         private bool PettingEnabled = true;
+
+        // Whether to pet all pets as they are visited.
+        private bool PettingPetEnabled = true;
 
         // Whether to max the animal's friendship toward the farmer while visiting, even though the farmer is completely ignoring them.
         private bool MaxFriendshipEnabled = true;
@@ -161,6 +164,14 @@ namespace AnimalSitter
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
+                name: () => I18n.Config_PettingPetEnabled(),
+                tooltip: () => I18n.Config_PettingPetEnabled_Description(),
+                getValue: () => this.Config.PettingPetEnabled,
+                setValue: value => this.Config.PettingPetEnabled = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
                 name: () => I18n.Config_MaxFriendshipEnabled(),
                 tooltip: () => I18n.Config_MaxFriendshipEnabled_Description(),
                 getValue: () => this.Config.MaxFriendshipEnabled,
@@ -174,6 +185,15 @@ namespace AnimalSitter
                 getValue: () => this.Config.CostPerAction,
                 setValue: value => this.Config.CostPerAction = value
                 );
+
+            configMenu.AddTextOption(
+                mod: this.ModManifest,
+                name: () => I18n.Config_WhoChecks(),
+                tooltip: () => I18n.Config_WhoChecks_Description(),
+                getValue: () => this.Config.WhoChecks,
+                setValue: value => this.Config.WhoChecks = value,
+                allowedValues: new string[] { "spouse", "pet", "Shane", "Haley", "Alex", "Leah", "Marnie" }
+            );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
@@ -219,6 +239,7 @@ namespace AnimalSitter
             }
 
             this.PettingEnabled = this.Config.PettingEnabled;
+            this.PettingPetEnabled = this.Config.PettingPetEnabled;
             this.GrowUpEnabled = this.Config.GrowUpEnabled;
             this.MaxHappinessEnabled = this.Config.MaxHappinessEnabled;
             this.MaxFriendshipEnabled = this.Config.MaxFriendshipEnabled;
@@ -268,12 +289,44 @@ namespace AnimalSitter
         private void IterateOverAnimals()
         {
             Farmer farmer = Game1.player;
+            Farm farm = Game1.getFarm();
             AnimalTasks stats = new AnimalTasks();
+
+            if (farmer.hasPet() && this.PettingPetEnabled)
+            {
+                // Pet each Pet
+                foreach (Pet pet in this.GetPets())
+                {
+                    try
+                    {
+                        pet.checkAction(farmer, farm);
+                        this.Monitor.Log(I18n.Log_PettingAnimal(animal_name: pet.Name), LogLevel.Trace);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Monitor.Log(I18n.Log_ExceptionOnkeyreleased(ex: ex), LogLevel.Error);
+                    }
+                }
+
+                // Water all the bowl
+                this.WaterPetBowl();
+            }
+
+
 
             foreach (FarmAnimal animal in this.GetAnimals())
             {
                 try
                 {
+                    if (animal.wasPet.Value && this.PettingPetEnabled)
+                    {
+                        this.Monitor.Log($"{animal.Name}");
+                        animal.pet(Game1.player);
+                        stats.AnimalsPet++;
+
+                        this.Monitor.Log(I18n.Log_PettingAnimal(animal_name: animal.Name), LogLevel.Trace);
+                    }
+
                     if (!animal.wasPet.Value && this.PettingEnabled)
                     {
                         animal.pet(Game1.player);
@@ -683,6 +736,29 @@ namespace AnimalSitter
             return animals;
         }
 
+        private List<Pet> GetPets()
+        {
+            List<Pet> pets = new List<Pet>();
+            foreach (GameLocation location in Game1.locations)
+            {
+                foreach (Pet pet in location.characters.OfType<Pet>())
+                {
+                    pets.Add(pet);
+                }
+            }
+            return pets;
+        }
+        private void WaterPetBowl()
+        {
+            foreach (GameLocation location in Game1.locations)
+            {
+                foreach (PetBowl item in location.buildings.OfType<PetBowl>())
+                {
+                    item.watered.Set(true);
+                    this.Monitor.Log(I18n.Log_WateringBowl(X: item.tileX.Value, Y: item.tileY.Value), LogLevel.Trace);
+                }
+            }
+        }
         private string GetRandomMessage(string messageStoreName, int low=1, int high=4)
         {
             var rand = RandomDialogue.Next(low, high + 1);
