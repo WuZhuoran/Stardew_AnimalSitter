@@ -17,6 +17,9 @@
   "config.PettingEnabled": "抚摸开关",
   "config.PettingEnabled.description": "助手会抚摸动物。默认开启。如果想自己动手，则设置为关闭。",
 
+  "config.PettingPetEnabled": "PettingPetEnabled",
+  "config.PettingPetEnabled.description": "This tells your animal worker that you want your pets petted. Default as true.",
+
   "config.MaxFriendshipEnabled": "好感度开关",
   "config.MaxFriendshipEnabled.description": "助手照料动物后，动物好感度是否增长。默认为否。",
 
@@ -108,5 +111,6 @@
   "log.found_coop_object": "Found coop object: {{obj_name}} / {{obj_category}}/{{obj_isAnimalProduct}}",
   "log.meow": "喵……",
   "log.woof": "汪……",
-  "log.imaginary_pet_take_care": "你幻想的宠物已经照料完了你的动物。"
+  "log.imaginary_pet_take_care": "你幻想的宠物已经照料完了你的动物。",
+  "log.watering_bowl": "Watering Bowl at X: {{X}}, Y: {{Y}}."
 }

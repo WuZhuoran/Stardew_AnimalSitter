@@ -5,6 +5,7 @@
   "MaxFullnessEnabled": false,
   "HarvestEnabled": true,
   "PettingEnabled": true,
+  "PettingPetEnabled": true,
   "MaxFriendshipEnabled": false,
   "CostPerAction": 25,
   "WhoChecks": "spouse",

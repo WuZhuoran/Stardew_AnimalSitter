@@ -17,6 +17,9 @@
   "config.PettingEnabled": "PettingEnabled",
   "config.PettingEnabled.description": "This tells your animal worker that you want your animals petted. This is the whole reason I made this mod, so it defaults to true. So if you set this to false, please keep it to yourself. If you enjoy petting each of your animals (because you don't have a hundred of them) then set it to false.",
 
+  "config.PettingPetEnabled": "PettingPetEnabled",
+  "config.PettingPetEnabled.description": "This tells your animal worker that you want your pets petted. Default as true.",
+
   "config.MaxFriendshipEnabled": "MaxFriendshipEnabled",
   "config.MaxFriendshipEnabled.description": "This tells your animal worker whether they have to wear your YOU mask, so that the affection of the animals is directed toward you, and not the help. Defaults to false.",
 
@@ -25,7 +28,6 @@
 
   "config.WhoChecks": "WhoChecks",
   "config.WhoChecks.description": "This is the name of the person (or animal) who checks your animals. Defaults to 'spouse'. You can also set it to 'pet'-- they do a really good job, but they don't provide much feedback. You can also set this to any character in the game, which will enable dialogues with that character. If it's set to anything else, that name will be used in messages.",
-
 
   "config.EnableMessages": "EnableMessages",
   "config.EnableMessages.description": "This is whether to enable in-game messages and dialogues revolving around your animal checker. It defaults to true.",
@@ -108,5 +110,6 @@
   "log.found_coop_object": "Found coop object: {{obj_name}} / {{obj_category}}/{{obj_isAnimalProduct}}",
   "log.meow": "Meow..",
   "log.woof": "Woof..",
-  "log.imaginary_pet_take_care": "Your imaginary pet has taken care of your animals."
+  "log.imaginary_pet_take_care": "Your imaginary pet has taken care of your animals.",
+  "log.watering_bowl": "Watering Bowl at X: {{X}}, Y: {{Y}}."
 }
