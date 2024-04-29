@@ -13,8 +13,6 @@ using Object = StardewValley.Object;
 using AnimalSitter.Integrations.GenericModConfigMenu;
 using Microsoft.Xna.Framework.Input;
 using StardewValley.Characters;
-using StardewValley.GameData.FarmAnimals;
-using Newtonsoft.Json.Linq;
 
 namespace AnimalSitter
 {
