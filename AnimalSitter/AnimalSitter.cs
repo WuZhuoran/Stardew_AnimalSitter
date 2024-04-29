@@ -13,6 +13,8 @@ using Object = StardewValley.Object;
 using AnimalSitter.Integrations.GenericModConfigMenu;
 using Microsoft.Xna.Framework.Input;
 using StardewValley.Characters;
+using StardewValley.GameData.FarmAnimals;
+using Newtonsoft.Json.Linq;
 
 namespace AnimalSitter
 {
@@ -373,6 +375,7 @@ namespace AnimalSitter
 
             foreach (FarmAnimal animal in this.GetAnimals())
             {
+                Random random = Utility.CreateRandom(animal.myID.Value / 2.0, Game1.stats.DaysPlayed);
                 try
                 {
                     if (!animal.wasPet.Value && this.PettingEnabled)
@@ -425,7 +428,8 @@ namespace AnimalSitter
                         {
                             if (this.TakeTrufflesFromPigs && this.isFirstTimeTruffle)
                             {
-                                Object toAdd = new Object(animal.currentProduce.Value, 1, false, -1, animal.produceQuality.Value);
+                                int stack = random.NextDouble() + Game1.player.team.AverageDailyLuck() * animal.GetAnimalData().DeluxeProduceLuckMultiplier < 0.7 ? 1 : 2;
+                                Object toAdd = new Object(animal.currentProduce.Value, stack, false, -1, animal.produceQuality.Value);
                                 this.AddItemToInventory(toAdd, farmer);
 
                                 stats.TrufflesHarvested++;
@@ -433,10 +437,13 @@ namespace AnimalSitter
                         }
                         else
                         {
-                            Object toAdd = new Object(animal.currentProduce.Value, 1, false, -1, animal.produceQuality.Value);
+                            int stack = random.NextDouble() + Game1.player.team.AverageDailyLuck() * animal.GetAnimalData().DeluxeProduceLuckMultiplier < 0.7 ? 1 : 2;
+                            stack = animal.hasEatenAnimalCracker.Value ? stack * 2 : stack;
+                            
+                            Object toAdd = new Object(animal.currentProduce.Value, stack, false, -1, animal.produceQuality.Value);
                             this.AddItemToInventory(toAdd, farmer);
+                            animal.currentProduce.Value = null;
 
-                            animal.currentProduce.Value = "0";
                             stats.ProductsHarvested++;
                         }
 
@@ -656,18 +663,15 @@ namespace AnimalSitter
                     if (Game1.player.isMarriedOrRoommates())
                     {
                         string spouse = Game1.player.isMarriedOrRoommates() ? Game1.player.getSpouse().getName() : this.Checker;
-                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(1, "Xdialog"), stats, this.Config);
                         message += I18n.Dialog_Xdialog1(spouse: spouse);
                     }
                     else
                     {
-                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(2, "Xdialog"), stats, this.Config);
                         message += I18n.Dialog_Xdialog2(num_actions: stats.NumActions);
                     }
 
                     if (totalCost > 0 && this.CostPerAnimal > 0)
                     {
-                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(3, "Xdialog"), stats, this.Config);
                         message += I18n.Dialog_Xdialog3(total_cost: stats.TotalCost);
                     }
 
@@ -676,12 +680,10 @@ namespace AnimalSitter
                 }
                 else if (gatheringOnly)
                 {
-                    // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(4, "Xdialog"), stats, this.Config);
                     message += I18n.Dialog_Xdialog4(checker: this.Checker);
 
                     if (totalCost > 0 && this.CostPerAnimal > 0)
                     {
-                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(3, "Xdialog"), stats, this.Config);
                         message += I18n.Dialog_Xdialog3(total_cost: stats.TotalCost);
                     }
 
@@ -693,7 +695,7 @@ namespace AnimalSitter
                     NPC character = Game1.getCharacterFromName(this.Checker);
                     if (character != null)
                     {
-                        //this.isCheckerCharacter = true;
+                        // this.isCheckerCharacter = true;
                         // string portrait = "";
                         if (character.Name.Equals("Shane"))
                         {
@@ -727,8 +729,6 @@ namespace AnimalSitter
                         }
                         else
                         {
-                            // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("greeting"), stats, this.Config);
-                            // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(5, "Xdialog"), stats, this.Config);
                             message += this.GetRandomMessage(messageStoreName: "greeting", low: 1, high: 7);
                             message += I18n.Dialog_Xdialog5();
                         }
@@ -738,12 +738,10 @@ namespace AnimalSitter
                         {
                             if (doesPlayerHaveEnoughCash)
                             {
-                                // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(6, "Xdialog"), stats, this.Config);
                                 message += I18n.Dialog_Xdialog6(total_cost: stats.TotalCost);
                             }
                             else
                             {
-                                // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("unfinishedmoney"), stats, this.Config);
                                 message += this.GetRandomMessage(messageStoreName: "unfinishedmoney", low: 1, high: 8);
                             }
                         }
@@ -753,7 +751,6 @@ namespace AnimalSitter
                             //message += portrait + "#$e#";
                         }
 
-                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetRandomMessage("smalltalk"), stats, this.Config);
                         message += this.GetRandomMessage(messageStoreName: "smalltalk", low: 1, high: 14);
                         // message += portrait + "#$e#";
 
@@ -762,8 +759,6 @@ namespace AnimalSitter
                     }
                     else
                     {
-                        //message += checker + " has performed " + numActions + " for your animals.";
-                        // message += this.DialogueManager.PerformReplacement(this.DialogueManager.GetMessageAt(7, "Xdialog"), stats, this.Config);
                         message += I18n.Dialog_Xdialog7(checker: this.Checker, num_actions: stats.NumActions);
                         HUDMessage msg = new HUDMessage(message);
                         Game1.addHUDMessage(msg);
