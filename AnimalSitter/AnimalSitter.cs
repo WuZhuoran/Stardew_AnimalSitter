@@ -57,7 +57,7 @@ namespace AnimalSitter
         private bool TakeTrufflesFromPigs = true;
 
         // Coordinates of the default chest.
-        private Vector2 ChestCoords = new Vector2(73f, 14f);
+        private Vector2 ChestCoords = new Vector2(87f, 18f);
 
         // Whether to bypass the inventory, and first attempt to deposit the harvest into the chest.  Inventory is then used as fallback.
         private bool BypassInventory;
@@ -266,6 +266,47 @@ namespace AnimalSitter
                 {
                     // this.TakeTrufflesFromPigs = value;
                     this.Config.TakeTrufflesFromPigs = value;
+                    this.ImportConfiguration();
+                }
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => I18n.Config_BypassInventory(),
+                tooltip: () => I18n.Config_BypassInventory_Description(),
+                getValue: () => this.Config.BypassInventory,
+                setValue: value =>
+                {
+                    this.Config.BypassInventory = value;
+                    this.ImportConfiguration();
+                }
+            );
+
+            configMenu.AddTextOption(
+                mod: this.ModManifest,
+                name: () => I18n.Config_ChestCoords(),
+                tooltip: () => I18n.Config_ChestCoords_Description(),
+                getValue: () => $"{this.Config.ChestCoords.X},{this.Config.ChestCoords.Y}",
+                setValue: value => 
+                {
+                    string[] xy = value.Split(',');
+                    if ( xy.Length != 2 ) 
+                    {
+                        xy = new string[] {"87", "18"};
+                    }
+                    this.Config.ChestCoords = new Vector2(float.Parse(xy[0]), float.Parse(xy[1]));
+                    this.ImportConfiguration();
+                }
+            );
+
+            configMenu.AddTextOption(
+                mod: this.ModManifest,
+                name: () => I18n.Config_ChestDefs(),
+                tooltip: () => I18n.Config_ChestDefs_Description(),
+                getValue: () => this.Config.ChestDefs,
+                setValue: value =>
+                {
+                    this.Config.ChestDefs = value;
                     this.ImportConfiguration();
                 }
             );

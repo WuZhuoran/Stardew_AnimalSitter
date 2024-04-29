@@ -40,7 +40,7 @@ Here's the default configuration:
 "enableMessages": true,
 "takeTrufflesFromPigs": true,
 "bypassInventory": false,
-"chestCoords": "73, 14",
+"chestCoords": "87, 18",
 "chestDefs": ""
 ```
 
