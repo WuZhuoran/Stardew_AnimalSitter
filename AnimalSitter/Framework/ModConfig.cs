@@ -18,7 +18,7 @@ namespace AnimalSitter.Framework
         public bool EnableMessages { get; set; } = true;
         public bool TakeTrufflesFromPigs { get; set; } = true;
         public bool BypassInventory { get; set; }
-        public Vector2 ChestCoords { get; set; } = new Vector2(73, 14);
+        public Vector2 ChestCoords { get; set; } = new Vector2(87, 18);
         public string ChestDefs { get; set; } = "";
     }
 }
