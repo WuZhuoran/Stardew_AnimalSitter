@@ -1,6 +1,6 @@
 {
   "config.KeyBind": "快捷键",
-  "config.KeyBind.description": "默认'O'键，按下后助手开始工作。",
+  "config.KeyBind.description": "默认快捷键，按下后助手开始工作。默认为'O'",
 
   "config.GrowUpEnabled": "立即成长开关",
   "config.GrowUpEnabled.description": "开启后助手会使用神秘力量使你的动物立即长大，并产出产品。默认为关闭。",
@@ -17,8 +17,8 @@
   "config.PettingEnabled": "抚摸开关",
   "config.PettingEnabled.description": "助手会抚摸动物。默认开启。如果想自己动手，则设置为关闭。",
 
-  "config.PettingPetEnabled": "PettingPetEnabled",
-  "config.PettingPetEnabled.description": "This tells your animal worker that you want your pets petted. Default as true.",
+  "config.PettingPetEnabled": "照顾宠物开关",
+  "config.PettingPetEnabled.description": "助手会照顾宠物，包括摸摸宠物和给宠物水盆浇水。默认为是。",
 
   "config.MaxFriendshipEnabled": "好感度开关",
   "config.MaxFriendshipEnabled.description": "助手照料动物后，动物好感度是否增长。默认为否。",
@@ -33,8 +33,8 @@
   "config.EnableMessages": "信息显示开关",
   "config.EnableMessages.description": "是否在游戏中开启动物照料的信息提醒。默认为是。",
 
-  "config.TakeTrufflesFromPigs": "修复松露开关",
-  "config.TakeTrufflesFromPigs.description": "助手会捡拾松露。解决松露变杂草的BUG。",
+  "config.TakeTrufflesFromPigs": "检查松露开关",
+  "config.TakeTrufflesFromPigs.description": "助手会从猪的身上搜索松露，会每天在猪找到松露之前就给你一些。默认为否。",
 
   "config.BypassInventory": "产品入箱开关",
   "config.BypassInventory.description": "产品被收集后，是否不进入背包，而是存放在你指定的箱子中，默认为否。",
