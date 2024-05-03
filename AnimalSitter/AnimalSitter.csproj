@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>AnimalSitter</AssemblyName>
     <RootNamespace>AnimalSitter</RootNamespace>
-    <Version>2.3.3</Version>
+    <Version>2.3.4</Version>
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
     <PlatformTarget>AnyCPU</PlatformTarget>
